@@ -11,11 +11,17 @@ A monorepo that simulates Stripe webhook events and uses AI to automatically gen
 **Backend:** TypeScript · Fastify · Drizzle ORM · PostgreSQL  
 **Frontend:** React · Vite · TypeScript
 
+🌐 _[Leia em Português](README-pt-br.md)_
+
+
+<img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/d5a376a4-90a1-4aca-be4d-19dc84a1949b" />
+
+</br>
+
 [Live Demo](https://webhook-handler-generator.vercel.app/) · [API](https://ai-powered-webhook-handler-generator.onrender.com) · [Report Bug](https://github.com/guilhermehfr/AI-Powered-Webhook-Handler-Generator/issues)
 
 > ℹ️ **Note:** The demo service may take up to **30 seconds** to start due to Render's free tier spin-down.
 
-🌐 _[Leia em Português](README-pt-br.md)_
 </div>
 
 ---
