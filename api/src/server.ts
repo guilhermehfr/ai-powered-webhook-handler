@@ -5,6 +5,7 @@ import {
   jsonSchemaTransform,
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
+import { z } from 'zod';
 import { fastifyCors } from '@fastify/cors';
 import { fastifySwagger } from '@fastify/swagger';
 
@@ -57,6 +58,26 @@ app.register(getWebhook);
 app.register(deleteWebhook);
 app.register(captureWebhook);
 app.register(generateHandler);
+
+app.register(async (app) => {
+  app.get(
+    '/api/health',
+    {
+      schema: {
+        summary: 'Basic API Health Check',
+        tags: ['System'],
+        response: {
+          200: z.object({ status: z.string() }),
+        },
+      },
+    },
+    async (req, reply) => {
+      // This route is being create to primaly be used to keep the Render API constantly alive.
+      // So no relevant health checking is being made here.
+      return reply.send({ status: 'ok' });
+    }
+  );
+});
 
 async function start() {
   try {
