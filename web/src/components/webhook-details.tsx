@@ -6,6 +6,7 @@ import { SectionDataTable } from './section-data-table';
 import { CodeBlock } from './ui/code-block';
 import { CopyIconButton } from './ui/copy-icon-button';
 import { twMerge } from 'tailwind-merge';
+import { API_URL } from '../http/client';
 
 interface WebhookDetailsProps {
   id: string;
@@ -15,7 +16,7 @@ export function WebhookDetails({ id }: WebhookDetailsProps) {
   const { data } = useSuspenseQuery({
     queryKey: ['webhook', id],
     queryFn: async () => {
-      const response = await fetch(`https://ai-powered-webhook-handler-generator.onrender.com/api/webhooks/${id}`);
+      const response = await fetch(`${API_URL}/api/webhooks/${id}`);
       const data = await response.json();
       return webhookDetailSchema.parse(data);
     },

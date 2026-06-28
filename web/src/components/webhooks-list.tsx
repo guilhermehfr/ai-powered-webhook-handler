@@ -7,6 +7,7 @@ import { WebhooksListItem } from './webhooks-list-item';
 import { webhookListSchema } from '../http/schemas/webhooks';
 import { twMerge } from 'tailwind-merge';
 import { CodeBlock, CodeBlockCopyIconButton } from './ui/code-block';
+import { API_URL } from '../http/client';
 
 export function WebhooksList() {
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -28,7 +29,7 @@ export function WebhooksList() {
     useSuspenseInfiniteQuery({
       queryKey: ['webhooks'],
       queryFn: async ({ pageParam }) => {
-        const url = new URL(`https://ai-powered-webhook-handler-generator.onrender.com/api/webhooks`);
+        const url = new URL(`${API_URL}/api/webhooks`);
 
         if (pageParam) {
           url.searchParams.append('cursor', pageParam);
@@ -123,7 +124,7 @@ export function WebhooksList() {
     setIsFetchingCode(true);
 
     try {
-      const response = await fetch('https://ai-powered-webhook-handler-generator.onrender.com/api/generate', {
+      const response = await fetch(`${API_URL}/api/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ webhooksIds: checkedWebhooksIds }),

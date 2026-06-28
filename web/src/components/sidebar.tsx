@@ -1,9 +1,10 @@
 import { CopyIconButton } from './ui/copy-icon-button';
 import { WebhooksList } from './webhooks-list';
 import { Suspense } from 'react';
+import { API_URL } from '../http/client';
 
 export function Sidebar() {
-  const webhooksPathname = 'https://ai-powered-webhook-handler-generator.onrender.com/api/webhooks';
+  const webhooksPathname = `${API_URL}/api/webhooks`;
 
   return (
     <div className="flex h-screen flex-col">
