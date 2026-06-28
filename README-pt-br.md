@@ -91,7 +91,10 @@ Um monorepo que simula eventos de webhook do Stripe e usa IA para gerar automati
 │   ├── src/
 │   │   ├── components/
 │   │   ├── http/
+│   │   │   ├── client.ts       # URL base da API via env
+│   │   │   └── schemas/
 │   │   └── routes/
+│   ├── .env.example
 │   ├── index.html
 │   └── package.json
 │
@@ -107,7 +110,7 @@ Um monorepo que simula eventos de webhook do Stripe e usa IA para gerar automati
 
 - [Node.js](https://nodejs.org/) v18+
 - [pnpm](https://pnpm.io/)
-- Um banco de dados [Neon](https://neon.tech/)
+- [Docker](https://docker.com/) (para banco local) ou um banco [Neon](https://neon.tech/)
 - Uma chave de API do [Groq](https://console.groq.com/)
 
 ### Instalação
@@ -118,37 +121,65 @@ pnpm install
 ```
 
 ### Variáveis de Ambiente
+
+**API:**
 ```sh
 cp api/.env.example api/.env
 ```
 
 Preencha o `api/.env`:
 ```env
-DATABASE_URL=postgresql://<user>:<password>@<host>.neon.tech/<dbname>?sslmode=require
+DATABASE_URL=postgresql://docker:docker@localhost:5432/webhooks   # Docker local
+# DATABASE_URL=postgresql://<user>:<password>@<host>.neon.tech/<dbname>?sslmode=require  # Neon
 GROQ_API_KEY=sua_chave_groq
 ```
 
-### Banco de Dados
+**Frontend (opcional — padrão `http://localhost:3333`):**
 ```sh
-# Rodar migrations
-pnpm --filter api db:migrate
+cp web/.env.example web/.env
+```
 
-# (Opcional) Popular o banco
-pnpm --filter api db:seed
+### Banco de Dados
+
+Inicie o container Postgres local:
+```sh
+pnpm --filter api db:up
+```
+
+Rode as migrations:
+```sh
+pnpm --filter api db:migrate
+```
+
+Popule com dados mock (opcional):
+```sh
+pnpm --filter api db:seed:local
+```
+
+Pare o banco quando terminar:
+```sh
+pnpm --filter api db:down
+```
+
+Resete o banco (deleta todos os dados e recria):
+```sh
+pnpm --filter api db:reset
 ```
 
 ### Desenvolvimento
-```sh
-# API
-pnpm --filter api dev
 
-# Frontend
-pnpm --filter web dev
+Inicie API e frontend simultaneamente:
+```sh
+pnpm dev
 ```
 
-Ou rodar ambos em paralelo:
+Ou inicie cada um separadamente:
 ```sh
-pnpm --parallel --filter api dev --filter web dev
+# API apenas
+pnpm --filter api dev
+
+# Frontend apenas
+pnpm --filter web dev
 ```
 
 ### Build

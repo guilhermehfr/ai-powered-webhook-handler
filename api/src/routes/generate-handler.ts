@@ -54,12 +54,11 @@ export const generateHandler: FastifyPluginAsyncZod = async (app) => {
           -  Logic to handle each event based on the validated data.
           -  Appropriate error handling for invalid payloads.
           ---
-          You can use this prompt to request the TypeScript code you need for handling webhook events with Zod validation.
-          return only the code generate, do not include any explanations or additional text.
+          return only the code generate, do not include any explanations or additional text - such as example of usage -.
         `.trim(),
           },
         ],
-        model: 'llama-3.1-8b-instant',
+        model: 'openai/gpt-oss-20b',
       });
 
       const raw = response.choices[0].message.content;

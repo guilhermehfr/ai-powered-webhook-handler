@@ -95,7 +95,10 @@ A monorepo that simulates Stripe webhook events and uses AI to automatically gen
 │   ├── src/
 │   │   ├── components/
 │   │   ├── http/
+│   │   │   ├── client.ts       # API base URL from env
+│   │   │   └── schemas/
 │   │   └── routes/
+│   ├── .env.example
 │   ├── index.html
 │   └── package.json
 │
@@ -111,7 +114,7 @@ A monorepo that simulates Stripe webhook events and uses AI to automatically gen
 
 - [Node.js](https://nodejs.org/) v18+
 - [pnpm](https://pnpm.io/)
-- A [Neon](https://neon.tech/) database
+- [Docker](https://docker.com/) (for local database) or a [Neon](https://neon.tech/) database
 - A [Groq](https://console.groq.com/) API key
 
 ### Installation
@@ -122,37 +125,65 @@ pnpm install
 ```
 
 ### Environment Variables
+
+**API:**
 ```sh
 cp api/.env.example api/.env
 ```
 
 Fill in your `api/.env`:
 ```env
-DATABASE_URL=postgresql://<user>:<password>@<host>.neon.tech/<dbname>?sslmode=require
+DATABASE_URL=postgresql://docker:docker@localhost:5432/webhooks   # local Docker
+# DATABASE_URL=postgresql://<user>:<password>@<host>.neon.tech/<dbname>?sslmode=require  # Neon
 GROQ_API_KEY=your_groq_api_key
 ```
 
-### Database
+**Frontend (optional — defaults to `http://localhost:3333`):**
 ```sh
-# Run migrations
-pnpm --filter api db:migrate
+cp web/.env.example web/.env
+```
 
-# (Optional) Seed
-pnpm --filter api db:seed
+### Database
+
+Start the local Postgres container:
+```sh
+pnpm --filter api db:up
+```
+
+Run migrations:
+```sh
+pnpm --filter api db:migrate
+```
+
+Seed with mock data (optional):
+```sh
+pnpm --filter api db:seed:local
+```
+
+Stop the database when done:
+```sh
+pnpm --filter api db:down
+```
+
+Reset the database (deletes all data and starts fresh):
+```sh
+pnpm --filter api db:reset
 ```
 
 ### Development
-```sh
-# API
-pnpm --filter api dev
 
-# Frontend
-pnpm --filter web dev
+Start both API and frontend simultaneously:
+```sh
+pnpm dev
 ```
 
-Or run both in parallel:
+Or start them individually:
 ```sh
-pnpm --parallel --filter api dev --filter web dev
+# API only
+pnpm --filter api dev
+
+# Frontend only
+pnpm --filter web dev
 ```
 
 ### Build
