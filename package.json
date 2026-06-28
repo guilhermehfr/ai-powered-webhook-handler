@@ -6,5 +6,8 @@
   "workspaces": [
     "api",
     "web"
-  ]
+  ],
+  "scripts": {
+    "dev": "pnpm --filter api --filter web --parallel dev"
+  }
 }
