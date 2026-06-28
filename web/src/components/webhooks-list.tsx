@@ -7,7 +7,7 @@ import { WebhooksListItem } from './webhooks-list-item';
 import { webhookListSchema } from '../http/schemas/webhooks';
 import { twMerge } from 'tailwind-merge';
 import { CodeBlock, CodeBlockCopyIconButton } from './ui/code-block';
-import { API_URL } from '../http/client';
+import { apiUrl } from '../http/client';
 
 export function WebhooksList() {
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -29,11 +29,8 @@ export function WebhooksList() {
     useSuspenseInfiniteQuery({
       queryKey: ['webhooks'],
       queryFn: async ({ pageParam }) => {
-        const url = new URL(`${API_URL}/api/webhooks`);
-
-        if (pageParam) {
-          url.searchParams.append('cursor', pageParam);
-        }
+        const cursorParam = pageParam ? `?cursor=${pageParam}` : '';
+        const url = apiUrl(`/api/webhooks${cursorParam}`);
 
         const response = await fetch(url);
         const data = await response.json();
@@ -124,7 +121,7 @@ export function WebhooksList() {
     setIsFetchingCode(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/generate`, {
+      const response = await fetch(apiUrl('/api/generate'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ webhooksIds: checkedWebhooksIds }),

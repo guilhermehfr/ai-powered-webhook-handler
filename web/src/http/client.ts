@@ -1,1 +1,5 @@
-export const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3333'
+export const API_URL = import.meta.env.VITE_API_URL ?? ''
+
+export function apiUrl(path: string): string {
+  return API_URL ? `${API_URL}${path}` : path
+}

@@ -1,10 +1,10 @@
 import { CopyIconButton } from './ui/copy-icon-button';
 import { WebhooksList } from './webhooks-list';
 import { Suspense } from 'react';
-import { API_URL } from '../http/client';
+import { apiUrl } from '../http/client';
 
 export function Sidebar() {
-  const webhooksPathname = `${API_URL}/api/webhooks`;
+  const webhooksPathname = apiUrl('/api/webhooks');
 
   return (
     <div className="flex h-screen flex-col">

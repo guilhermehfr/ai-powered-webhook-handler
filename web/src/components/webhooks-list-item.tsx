@@ -4,7 +4,7 @@ import { Trash2Icon } from 'lucide-react';
 import { Checkbox } from './ui/checkbox';
 import { formatDistanceToNow } from 'date-fns';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { API_URL } from '../http/client';
+import { apiUrl } from '../http/client';
 
 interface WebhooksListItemProps {
   webhook: {
@@ -26,7 +26,7 @@ export function WebhooksListItem({
 
   const { mutate: deleteWebhook } = useMutation({
     mutationFn: async (id: string) => {
-      await fetch(`${API_URL}/api/webhooks/${id}`, {
+      await fetch(apiUrl(`/api/webhooks/${id}`), {
         method: 'DELETE',
       });
     },
